@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AnView</string>
+    <string name="accessibility_service_description">Scrape data from views</string>
 </resources>
