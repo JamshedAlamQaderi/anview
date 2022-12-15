@@ -1,6 +1,7 @@
 package com.jamshedalamqaderi.anview.services
 
 import android.accessibilityservice.AccessibilityService
+import android.content.Intent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.jamshedalamqaderi.anview.entities.AnViewObserver
 import com.jamshedalamqaderi.anview.exceptions.AnViewObserverAlreadyRegisteredException
@@ -9,6 +10,7 @@ import kotlin.time.Duration
 
 abstract class AnViewAccessibilityService : AccessibilityService() {
     companion object {
+        private var instance: AnViewAccessibilityService? = null
         private var currentRootWindow: AccessibilityNodeInfo? = null
         private val observerList = arrayListOf<AnViewObserver>()
 
@@ -34,6 +36,15 @@ abstract class AnViewAccessibilityService : AccessibilityService() {
         fun currentView(): AccessibilityNodeInfo? {
             return currentRootWindow
         }
+
+        fun getInstance(): AnViewAccessibilityService? {
+            return instance
+        }
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        instance = this
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onServiceConnected() {
@@ -51,8 +62,14 @@ abstract class AnViewAccessibilityService : AccessibilityService() {
         timer.scheduleAtFixedRate(timerTask, 0, 100)
     }
 
+    override fun onUnbind(intent: Intent?): Boolean {
+        instance = null
+        return super.onUnbind(intent)
+    }
+
     override fun onDestroy() {
         currentRootWindow = null
         observerList.clear()
+        instance = null
     }
 }
