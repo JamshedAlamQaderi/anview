@@ -1,15 +1,23 @@
 package com.jamshedalamqaderi.anview.ext
 
 import android.view.accessibility.AccessibilityNodeInfo
+import com.jamshedalamqaderi.anview.entities.QueryNode
+import com.jamshedalamqaderi.anview.scraper.AnViewBaseScraper
+import com.jamshedalamqaderi.anview.scraper.AnViewScraper
 
 object AccessibilityNodeInfoExt {
+    private val anViewScraper: AnViewBaseScraper = AnViewScraper.create()
 
-    fun AccessibilityNodeInfo.findNodeList(query: String) {
-
+    fun AccessibilityNodeInfo.findNodes(queryJson: String): List<AccessibilityNodeInfo> {
+        anViewScraper.query(queryJson)
+        anViewScraper.viewNode(this)
+        return anViewScraper.scrape()
     }
 
-    fun AccessibilityNodeInfo.findNode(query: String) {
-
+    fun AccessibilityNodeInfo.findNodes(query: QueryNode): List<AccessibilityNodeInfo> {
+        anViewScraper.query(query)
+        anViewScraper.viewNode(this)
+        return anViewScraper.scrape()
     }
 
     fun AccessibilityNodeInfo?.toAnViewString(): String {
@@ -20,7 +28,11 @@ object AccessibilityNodeInfoExt {
             append("text = ${text?.toString()?.replace("\n", "\\n") ?: ""}; ")
             append("error = $error; ")
             append("maxTextLength = $maxTextLength; ")
-            append("contentDescription = ${contentDescription?.toString()?.replace("\n", "\\n") ?: ""}; ")
+            append(
+                "contentDescription = ${
+                    contentDescription?.toString()?.replace("\n", "\\n") ?: ""
+                }; "
+            )
             append("viewIdResName = $viewIdResourceName; ")
             append("checkable = $isCheckable; ")
             append("checked = $isChecked; ")

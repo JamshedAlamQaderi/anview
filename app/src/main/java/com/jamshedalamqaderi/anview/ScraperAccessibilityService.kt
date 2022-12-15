@@ -4,7 +4,6 @@ import android.content.Context
 import android.provider.Settings
 import android.text.TextUtils
 import android.view.accessibility.AccessibilityEvent
-import com.jamshedalamqaderi.anview.ext.AccessibilityNodeInfoExt.toTreeString
 import com.jamshedalamqaderi.anview.services.AnViewAccessibilityService
 
 class ScraperAccessibilityService : AnViewAccessibilityService() {
@@ -46,7 +45,10 @@ class ScraperAccessibilityService : AnViewAccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        super.onAccessibilityEvent(event)
-        println(rootInActiveWindow.toTreeString())
+
+    }
+
+    override fun onInterrupt() {
+
     }
 }
