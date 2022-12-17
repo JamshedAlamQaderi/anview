@@ -18,9 +18,12 @@ object AnViewActions {
     fun AccessibilityNodeInfo.tap(): Boolean {
         val rect = Rect()
         getBoundsInScreen(rect)
-        return dispatchGesture(Path().apply {
-            moveTo(rect.exactCenterX(), rect.exactCenterY())
-        }, ViewConfiguration.getTapTimeout().toLong())
+        return dispatchGesture(
+            Path().apply {
+                moveTo(rect.exactCenterX(), rect.exactCenterY())
+            },
+            ViewConfiguration.getTapTimeout().toLong()
+        )
     }
 
     fun AccessibilityNodeInfo.longClick() = performAction(AccessibilityNodeInfo.ACTION_LONG_CLICK)
@@ -29,9 +32,12 @@ object AnViewActions {
     fun AccessibilityNodeInfo.longTap(): Boolean {
         val rect = Rect()
         getBoundsInScreen(rect)
-        return dispatchGesture(Path().apply {
-            moveTo(rect.exactCenterX(), rect.exactCenterY())
-        }, ViewConfiguration.getLongPressTimeout().toLong())
+        return dispatchGesture(
+            Path().apply {
+                moveTo(rect.exactCenterX(), rect.exactCenterY())
+            },
+            ViewConfiguration.getLongPressTimeout().toLong()
+        )
     }
 
     fun AccessibilityNodeInfo.swipeForward() =
@@ -89,12 +95,15 @@ object AnViewActions {
     }
 
     fun AccessibilityNodeInfo.inputText(text: String) =
-        performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, Bundle().apply {
-            putCharSequence(
-                AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
-                text
-            )
-        })
+        performAction(
+            AccessibilityNodeInfo.ACTION_SET_TEXT,
+            Bundle().apply {
+                putCharSequence(
+                    AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
+                    text
+                )
+            }
+        )
 
     fun pressBack(): Boolean {
         return AnViewAccessibilityService
@@ -111,12 +120,14 @@ object AnViewActions {
     @RequiresApi(Build.VERSION_CODES.N)
     fun swipe(startX: Float, startY: Float, endX: Float, endY: Float): Boolean {
         if (startX < 0 || startY < 0 || endX < 0 || endY < 0) return false
-        return dispatchGesture(Path().apply {
-            moveTo(startX, startY)
-            lineTo(endX, endY)
-        }, ViewConfiguration.getScrollDefaultDelay().toLong())
+        return dispatchGesture(
+            Path().apply {
+                moveTo(startX, startY)
+                lineTo(endX, endY)
+            },
+            ViewConfiguration.getScrollDefaultDelay().toLong()
+        )
     }
-
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun dispatchGesture(path: Path, duration: Long): Boolean {

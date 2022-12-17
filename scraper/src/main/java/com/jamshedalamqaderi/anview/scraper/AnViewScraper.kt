@@ -53,4 +53,3 @@ class AnViewScraper private constructor() : AnViewBaseScraper() {
         return queryNode.traverse(nodeInfo)
     }
 }
-

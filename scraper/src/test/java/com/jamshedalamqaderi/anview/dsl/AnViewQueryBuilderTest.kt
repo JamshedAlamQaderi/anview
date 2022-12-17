@@ -23,8 +23,10 @@ class AnViewQueryBuilderTest {
         }
 
         assertEquals(
-            query, QueryNode(
-                params = listOf(QueryParam(ParamType.nodeIndex, "1")), child = QueryNode(
+            query,
+            QueryNode(
+                params = listOf(QueryParam(ParamType.nodeIndex, "1")),
+                child = QueryNode(
                     params = listOf(
                         QueryParam(ParamType.text, "Hello, AnView"),
                         QueryParam(ParamType.contentDescription, "Content Description")

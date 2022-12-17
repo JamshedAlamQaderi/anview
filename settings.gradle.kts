@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "AnView"
 include(":app")
 include(":scraper")
+project(":scraper").name = "anview"

@@ -16,7 +16,8 @@ class QueryNodeExtTest {
             child = QueryNode(params = listOf(QueryParam(ParamType.nodeIndex, "1")))
         ).toList()
         assertEquals(
-            queryNode, listOf(
+            queryNode,
+            listOf(
                 QueryNode(
                     params = listOf(QueryParam(ParamType.nodeIndex, "0"))
                 ),

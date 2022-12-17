@@ -7,7 +7,6 @@ import com.jamshedalamqaderi.anview.enums.ParamType
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-
 object QueryNodeExt {
     fun QueryNode.toList(): List<QueryNode> {
         val childList = child?.toList()

@@ -45,10 +45,8 @@ class ScraperAccessibilityService : AnViewAccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-
     }
 
     override fun onInterrupt() {
-
     }
 }

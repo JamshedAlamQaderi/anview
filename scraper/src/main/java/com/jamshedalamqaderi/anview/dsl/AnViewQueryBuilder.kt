@@ -26,7 +26,6 @@ class AnViewQueryNodeBuilder : AnViewBuilder<QueryNode>, AnViewQueryBuilder {
     override fun build(): QueryNode {
         return QueryNode(queryParamBuilder.build(), child = queryNodeBuilder?.build())
     }
-
 }
 
 class AnViewQueryParamBuilder : AnViewBuilder<List<QueryParam>>, AnViewParamBuilder {
@@ -39,7 +38,6 @@ class AnViewQueryParamBuilder : AnViewBuilder<List<QueryParam>>, AnViewParamBuil
     override fun build(): List<QueryParam> {
         return paramList
     }
-
 }
 
 @AnViewDSL

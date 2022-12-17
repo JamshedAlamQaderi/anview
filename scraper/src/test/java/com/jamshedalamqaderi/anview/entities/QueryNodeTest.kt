@@ -41,7 +41,6 @@ class QueryNodeTest {
             on(mock.getChild(0)) doReturn child1
             on(mock.getChild(1)) doReturn child2
         }
-
     }
 
     @Test

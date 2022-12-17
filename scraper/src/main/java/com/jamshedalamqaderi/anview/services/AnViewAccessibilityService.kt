@@ -5,7 +5,8 @@ import android.content.Intent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.jamshedalamqaderi.anview.entities.AnViewObserver
 import com.jamshedalamqaderi.anview.exceptions.AnViewObserverAlreadyRegisteredException
-import java.util.*
+import java.util.Timer
+import java.util.TimerTask
 import kotlin.time.Duration
 
 abstract class AnViewAccessibilityService : AccessibilityService() {

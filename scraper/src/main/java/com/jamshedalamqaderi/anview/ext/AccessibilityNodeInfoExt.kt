@@ -23,14 +23,14 @@ object AccessibilityNodeInfoExt {
     fun AccessibilityNodeInfo?.toAnViewString(): String {
         if (this == null) return ""
         return StringBuilder().apply {
-            append("[packageName = ${packageName}; ")
+            append("[packageName = $packageName; ")
             append("className = $className; ")
             append("text = ${text?.toString()?.replace("\n", "\\n") ?: ""}; ")
             append("error = $error; ")
             append("maxTextLength = $maxTextLength; ")
             append(
                 "contentDescription = ${
-                    contentDescription?.toString()?.replace("\n", "\\n") ?: ""
+                contentDescription?.toString()?.replace("\n", "\\n") ?: ""
                 }; "
             )
             append("viewIdResName = $viewIdResourceName; ")
