@@ -10,17 +10,17 @@ data class AnViewObserver(
 ) {
     private var lastNotificationTime: Long? = null
 
-    fun isReadyToNotify(): Boolean {
+    fun isReadyToNotify(currentTime: Long = System.currentTimeMillis()): Boolean {
         if (lastNotificationTime == null || (
             (
                 (
                     lastNotificationTime
                         ?: 0
                     ) + period.inWholeMilliseconds
-                ) <= System.currentTimeMillis()
+                ) <= currentTime
             )
         ) {
-            lastNotificationTime = System.currentTimeMillis()
+            lastNotificationTime = currentTime
             return true
         }
         return false
