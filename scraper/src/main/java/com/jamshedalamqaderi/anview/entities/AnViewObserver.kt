@@ -8,17 +8,10 @@ data class AnViewObserver(
     val period: Duration,
     val observer: (AccessibilityNodeInfo?) -> Unit,
 ) {
-    private var lastNotificationTime: Long? = null
+    private var lastNotificationTime: Long = 0
 
     fun isReadyToNotify(currentTime: Long = System.currentTimeMillis()): Boolean {
-        if (lastNotificationTime == null || (
-            (
-                (
-                    lastNotificationTime
-                        ?: 0
-                    ) + period.inWholeMilliseconds
-                ) <= currentTime
-            )
+        if (lastNotificationTime == 0L || (lastNotificationTime + period.inWholeMilliseconds <= currentTime)
         ) {
             lastNotificationTime = currentTime
             return true
