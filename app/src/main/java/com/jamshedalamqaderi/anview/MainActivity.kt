@@ -26,8 +26,14 @@ import androidx.lifecycle.LifecycleOwner
 import com.jamshedalamqaderi.anview.ui.theme.AnViewTheme
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        var screenWidth: Int = 0
+            private set
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        windowManager.defaultDisplay
         setContent {
             AnViewTheme {
                 Surface(

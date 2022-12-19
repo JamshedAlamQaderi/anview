@@ -1,8 +1,10 @@
 package com.jamshedalamqaderi.anview.bot
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
+import androidx.annotation.RequiresApi
 import com.jamshedalamqaderi.anview.dsl.anViewQuery
 import com.jamshedalamqaderi.anview.enums.ParamType
 import com.jamshedalamqaderi.anview.ext.AnViewActions
@@ -10,7 +12,12 @@ import com.jamshedalamqaderi.anview.ext.AnViewActions.click
 import com.jamshedalamqaderi.anview.ext.AnViewActions.inputText
 import com.jamshedalamqaderi.anview.ext.QueryNodeExt.findNodes
 
-class SendMessageBot(private val context: Context) {
+
+class SendMessageBot(
+    private val context: Context,
+    private val number: String,
+    private val message: String
+) {
     private var nextState = SendMessageBotState.PREPARE_OPEN_APP
 
     private val startChatButtonQuery = anViewQuery {
@@ -71,8 +78,6 @@ class SendMessageBot(private val context: Context) {
             SendMessageBotState.VERIFY_CLICK_NEW -> verifyClickNew(nodeInfo)
             SendMessageBotState.PREPARE_TYPE_NUMBER -> prepareTypeNumber(nodeInfo)
             SendMessageBotState.VERIFY_TYPE_NUMBER -> verifyTypeNumber(nodeInfo)
-            SendMessageBotState.PREPARE_PRESS_ENTER -> preparePressEnter(nodeInfo)
-            SendMessageBotState.VERIFY_PRESS_ENTER -> verifyPressEnter(nodeInfo)
             SendMessageBotState.PREPARE_TYPE_MESSAGE -> prepareTypeMessage(nodeInfo)
             SendMessageBotState.VERIFY_TYPE_MESSAGE -> verifyTypeMessage(nodeInfo)
             SendMessageBotState.PREPARE_CLICK_SEND -> prepareClickSend(nodeInfo)
@@ -119,31 +124,25 @@ class SendMessageBot(private val context: Context) {
         val matchingNodes = nodeInfo.findNodes(typeNumberFieldQuery)
         if (matchingNodes.isNotEmpty()) {
             val numberField = matchingNodes.first()
-            if (numberField.inputText("2222")) {
+            if (numberField.inputText(number)) {
                 nextState = SendMessageBotState.VERIFY_TYPE_NUMBER
             }
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun verifyTypeNumber(nodeInfo: AccessibilityNodeInfo) {
         val matchingNodes = nodeInfo.findNodes(typeNumberFieldQuery)
         if (matchingNodes.isNotEmpty()) {
             val numberField = matchingNodes.first()
-            if (numberField.text?.toString() == "2222") {
-                nextState = SendMessageBotState.PREPARE_PRESS_ENTER
+            if (numberField.text?.toString() == number) {
+                val displayMetrics = context.resources.displayMetrics
+                AnViewActions.tap(
+                    displayMetrics.widthPixels * .99F,
+                    displayMetrics.heightPixels * .99F
+                )
+                nextState = SendMessageBotState.PREPARE_TYPE_MESSAGE
             }
-        }
-    }
-
-    private fun preparePressEnter(nodeInfo: AccessibilityNodeInfo) {
-//        typeNumberFieldQuery
-//            .traverse(nodeInfo)
-//            .first().performAction(AccessibilityNodeInfo.ACTION_NEXT_AT_MOVEMENT_GRANULARITY)
-    }
-
-    private fun verifyPressEnter(nodeInfo: AccessibilityNodeInfo) {
-        if (nodeInfo.findNodes(typeMessageField).isNotEmpty()) {
-            nextState = SendMessageBotState.PREPARE_TYPE_MESSAGE
         }
     }
 
@@ -153,7 +152,7 @@ class SendMessageBot(private val context: Context) {
             .filter { it.text?.toString() == "Text" }
         if (matchingNodes.isNotEmpty()) {
             val messageField = matchingNodes.first()
-            if (messageField.inputText("Hello, AnView")) {
+            if (messageField.inputText(message)) {
                 nextState = SendMessageBotState.VERIFY_TYPE_MESSAGE
             }
         }
@@ -162,7 +161,7 @@ class SendMessageBot(private val context: Context) {
     private fun verifyTypeMessage(nodeInfo: AccessibilityNodeInfo) {
         val matchingNodes = nodeInfo
             .findNodes(typeMessageField)
-            .filter { it.text?.toString() == "Hello, AnView" }
+            .filter { it.text?.toString() == message }
         if (matchingNodes.isNotEmpty()) {
             nextState = SendMessageBotState.PREPARE_CLICK_SEND
         }

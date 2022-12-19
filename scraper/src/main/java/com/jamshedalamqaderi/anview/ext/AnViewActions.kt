@@ -18,9 +18,14 @@ object AnViewActions {
     fun AccessibilityNodeInfo.tap(): Boolean {
         val rect = Rect()
         getBoundsInScreen(rect)
+        return tap(rect.exactCenterX(), rect.exactCenterY())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun tap(x: Float, y: Float): Boolean {
         return dispatchGesture(
             Path().apply {
-                moveTo(rect.exactCenterX(), rect.exactCenterY())
+                moveTo(x, y)
             },
             ViewConfiguration.getTapTimeout().toLong()
         )
@@ -32,9 +37,14 @@ object AnViewActions {
     fun AccessibilityNodeInfo.longTap(): Boolean {
         val rect = Rect()
         getBoundsInScreen(rect)
+        return longTap(rect.exactCenterX(), rect.exactCenterY())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun longTap(x: Float, y: Float): Boolean {
         return dispatchGesture(
             Path().apply {
-                moveTo(rect.exactCenterX(), rect.exactCenterY())
+                moveTo(x, y)
             },
             ViewConfiguration.getLongPressTimeout().toLong()
         )

@@ -36,7 +36,7 @@ class ScraperAccessibilityService : AnViewAccessibilityService() {
         // AnViewAccessibilityService.registerViewObserver() can be called from anywhere
         // On every 500 millisecond will be called with AccessibilityNodeInfo argument
         if (!viewDebugMode) {
-            val bot = SendMessageBot(this)
+            val bot = SendMessageBot(this, "2222", "Hello, AnView")
             registerViewObserver("MESSAGE_BOT", 500L.milliseconds) { accessibilityNodeInfo ->
                 bot.onUpdate(accessibilityNodeInfo)
             }
