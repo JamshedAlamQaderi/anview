@@ -8,39 +8,58 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 object QueryNodeExt {
-    fun QueryNode.toList(): List<QueryNode> {
-        val childList = child?.toList()
-        if (childList != null && childList.isNotEmpty()) {
-            return listOf(this.copy(child = null), *childList.toTypedArray())
-        }
-        return listOf(this.copy(child = null))
+
+    fun AccessibilityNodeInfo.findNodes(query: QueryNode): List<AccessibilityNodeInfo> {
+        val nodeList = arrayListOf<AccessibilityNodeInfo>()
+        findNodeList(query, nodeList)
+        return nodeList
     }
 
-    fun QueryNode.traverse(nodeInfo: AccessibilityNodeInfo?): List<AccessibilityNodeInfo> {
-        val matchedNodeList = arrayListOf<AccessibilityNodeInfo>()
-        traverse(nodeInfo, null, matchedNodeList)
-        return matchedNodeList
-    }
-
-    private fun QueryNode.traverse(
-        nodeInfo: AccessibilityNodeInfo?,
-        nodeInfoIndex: Int?,
-        matchedNodeList: ArrayList<AccessibilityNodeInfo>,
+    private fun AccessibilityNodeInfo.findNodeList(
+        query: QueryNode,
+        resultNodes: ArrayList<AccessibilityNodeInfo>,
+        currentNodeIndex: Int? = null
     ) {
-        val isMatched = params.map { param ->
-            matchWithParamType(param, nodeInfo, nodeInfoIndex)
-        }.reduceOrNull { acc, b -> acc && b }
-        if (isMatched == false) {
-            matchedNodeList.clear()
+        val node = query.traverseTopToBottom(this, currentNodeIndex)
+        if (node != null) {
+            resultNodes.add(node);
             return
         }
-        if (child == null && nodeInfo != null) {
-            matchedNodeList.add(nodeInfo)
+        forEachChild { childNodeIndex, childNode ->
+            childNode?.findNodeList(query, resultNodes, childNodeIndex)
         }
-        for (index in 0 until (nodeInfo?.childCount ?: 0)) {
-            val nodeChild = nodeInfo?.getChild(index)
-            child?.traverse(nodeChild, index, matchedNodeList)
+    }
+
+    fun AccessibilityNodeInfo.findNode(query: QueryNode, skip: Int = -1): AccessibilityNodeInfo? {
+        val matchedList = findNodes(query)
+        if (skip >= 0) {
+            return matchedList
+                .filterIndexed { index, _ -> index > skip }
+                .firstOrNull()
         }
+        return matchedList.firstOrNull()
+    }
+
+    private fun QueryNode.traverseTopToBottom(
+        nodeInfo: AccessibilityNodeInfo,
+        currentNodeIndex: Int? = null
+    ): AccessibilityNodeInfo? {
+        val isMatched = params.map { param ->
+            matchWithParamType(param, nodeInfo, currentNodeIndex)
+        }.reduceOrNull { acc, b -> acc && b } ?: false
+        if (isMatched) {
+            if (child == null) return nodeInfo
+            var resultNode: AccessibilityNodeInfo? = null
+            nodeInfo.forEachChild { nodeIndex, childNode ->
+                val matched = child.traverseTopToBottom(childNode!!, nodeIndex)
+                if (matched != null) {
+                    resultNode = matched
+                    return@forEachChild
+                }
+            }
+            return resultNode
+        }
+        return null
     }
 
     private fun matchWithParamType(
@@ -81,5 +100,11 @@ object QueryNodeExt {
             ParamType.nodeIndex -> nodeInfoIndex?.toString()
             else -> null
         }?.isMatched(param.value) ?: false
+    }
+
+    fun AccessibilityNodeInfo.forEachChild(block: (Int, AccessibilityNodeInfo?) -> Unit) {
+        for (index in 0 until childCount) {
+            block(index, getChild(index))
+        }
     }
 }

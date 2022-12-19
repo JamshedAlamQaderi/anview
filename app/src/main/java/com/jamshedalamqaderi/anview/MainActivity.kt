@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val isAccessibilityServiceEnabled = remember {
                         mutableStateOf(
-                            ScraperAccessibilityService.isAccessibilityServiceEnabled(
+                            ScraperAccessibilityService.isEnabled(
                                 this@MainActivity
                             )
                         )
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
                         when (event) {
                             Lifecycle.Event.ON_RESUME -> {
                                 isAccessibilityServiceEnabled.value =
-                                    ScraperAccessibilityService.isAccessibilityServiceEnabled(this@MainActivity)
+                                    ScraperAccessibilityService.isEnabled(this@MainActivity)
                             }
                             else -> {}
                         }

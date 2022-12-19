@@ -2,51 +2,51 @@ package com.jamshedalamqaderi.anview
 
 import android.content.Context
 import android.provider.Settings
-import android.text.TextUtils
 import android.view.accessibility.AccessibilityEvent
+import com.jamshedalamqaderi.anview.bot.SendMessageBot
+import com.jamshedalamqaderi.anview.ext.AccessibilityNodeInfoExt.toTreeString
 import com.jamshedalamqaderi.anview.services.AnViewAccessibilityService
+import kotlin.time.Duration.Companion.milliseconds
+
 
 class ScraperAccessibilityService : AnViewAccessibilityService() {
     companion object {
-        fun isAccessibilityServiceEnabled(context: Context): Boolean {
-            val enabled = try {
-                val res = Settings.Secure.getInt(
+        fun isEnabled(context: Context): Boolean {
+            if (Settings.Secure.getInt(
                     context.contentResolver,
                     Settings.Secure.ACCESSIBILITY_ENABLED
-                )
-                res > 0
-            } catch (e: Exception) {
-                false
-            }
-            if (enabled) {
+                ) > 0
+            ) {
                 val settingValue = Settings.Secure.getString(
                     context.contentResolver,
                     Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
                 )
-                if (settingValue != null) {
-                    val automationAccessibilityService =
-                        context.packageName + "/" + ScraperAccessibilityService::class.java.canonicalName
-                    val splitter = TextUtils.SimpleStringSplitter(':')
-                    splitter.setString(settingValue)
-                    while (splitter.hasNext()) {
-                        val accessibilityService = splitter.next()
-                        if (accessibilityService.equals(automationAccessibilityService, true)) {
-                            return true
-                        }
-                    }
-                }
+                return settingValue?.split(":")
+                    ?.contains("${context.packageName}/${this::class.qualifiedName}")
+                    ?: false
             }
             return false
         }
     }
 
+    private val viewDebugMode = false
+
     override fun onServiceConnected() {
         super.onServiceConnected()
+        // AnViewAccessibilityService.registerViewObserver() can be called from anywhere
+        // On every 500 millisecond will be called with AccessibilityNodeInfo argument
+        if (!viewDebugMode) {
+            val bot = SendMessageBot(this)
+            registerViewObserver("MESSAGE_BOT", 500L.milliseconds) { accessibilityNodeInfo ->
+                bot.onUpdate(accessibilityNodeInfo)
+            }
+        }
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-    }
-
-    override fun onInterrupt() {
+        super.onAccessibilityEvent(event)
+        if (viewDebugMode) {
+            println(currentView()?.toTreeString())
+        }
     }
 }

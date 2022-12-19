@@ -1,27 +1,10 @@
 package com.jamshedalamqaderi.anview.ext
 
 import android.view.accessibility.AccessibilityNodeInfo
-import com.jamshedalamqaderi.anview.entities.QueryNode
-import com.jamshedalamqaderi.anview.scraper.AnViewBaseScraper
-import com.jamshedalamqaderi.anview.scraper.AnViewScraper
 
 object AccessibilityNodeInfoExt {
-    private val anViewScraper: AnViewBaseScraper = AnViewScraper.create()
 
-    fun AccessibilityNodeInfo.findNodes(queryJson: String): List<AccessibilityNodeInfo> {
-        anViewScraper.query(queryJson)
-        anViewScraper.viewNode(this)
-        return anViewScraper.scrape()
-    }
-
-    fun AccessibilityNodeInfo.findNodes(query: QueryNode): List<AccessibilityNodeInfo> {
-        anViewScraper.query(query)
-        anViewScraper.viewNode(this)
-        return anViewScraper.scrape()
-    }
-
-    fun AccessibilityNodeInfo?.toAnViewString(): String {
-        if (this == null) return ""
+    fun AccessibilityNodeInfo.toAnViewString(): String {
         return StringBuilder().apply {
             append("[packageName = $packageName; ")
             append("className = $className; ")
@@ -30,7 +13,7 @@ object AccessibilityNodeInfoExt {
             append("maxTextLength = $maxTextLength; ")
             append(
                 "contentDescription = ${
-                contentDescription?.toString()?.replace("\n", "\\n") ?: ""
+                    contentDescription?.toString()?.replace("\n", "\\n") ?: ""
                 }; "
             )
             append("viewIdResName = $viewIdResourceName; ")
@@ -64,7 +47,7 @@ object AccessibilityNodeInfoExt {
         childIndex: Int? = null
     ) {
         if (isParent) {
-            appender.append(">>---: ${nodeInfo.toAnViewString()}\n")
+            appender.append(">>---: ${nodeInfo?.toAnViewString()}\n")
         } else {
             appender.append("$indent+---($childIndex): ${nodeInfo?.toAnViewString()}\n")
         }

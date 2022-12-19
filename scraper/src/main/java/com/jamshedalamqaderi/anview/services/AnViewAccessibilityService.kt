@@ -2,6 +2,7 @@ package com.jamshedalamqaderi.anview.services
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Intent
+import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.jamshedalamqaderi.anview.entities.AnViewObserver
 import com.jamshedalamqaderi.anview.exceptions.AnViewObserverAlreadyRegisteredException
@@ -43,12 +44,10 @@ abstract class AnViewAccessibilityService : AccessibilityService() {
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        instance = this
-        return super.onStartCommand(intent, flags, startId)
-    }
+    private var enabledDebugMode = false
 
     override fun onServiceConnected() {
+        instance = this
         val timer = Timer()
         val timerTask = object : TimerTask() {
             override fun run() {
@@ -61,6 +60,14 @@ abstract class AnViewAccessibilityService : AccessibilityService() {
             }
         }
         timer.scheduleAtFixedRate(timerTask, 0, 100)
+    }
+
+    override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+
+    }
+
+    override fun onInterrupt() {
+
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
