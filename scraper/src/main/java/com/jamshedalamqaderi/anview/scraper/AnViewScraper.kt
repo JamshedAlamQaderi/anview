@@ -2,7 +2,7 @@ package com.jamshedalamqaderi.anview.scraper
 
 import android.view.accessibility.AccessibilityNodeInfo
 import com.jamshedalamqaderi.anview.entities.QueryNode
-import com.jamshedalamqaderi.anview.ext.QueryNodeExt.traverse
+import com.jamshedalamqaderi.anview.ext.QueryNodeExt.findNodes
 import com.jamshedalamqaderi.anview.interfaces.Scraper
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -50,6 +50,6 @@ class AnViewScraper private constructor() : AnViewBaseScraper() {
     }
 
     override fun scrape(): List<AccessibilityNodeInfo> {
-        return queryNode.traverse(nodeInfo)
+        return nodeInfo.findNodes(queryNode)
     }
 }

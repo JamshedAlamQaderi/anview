@@ -1,4 +1,4 @@
-name: 'Analyse codebase'
+name: 'Analyse'
 
 on:
   push:

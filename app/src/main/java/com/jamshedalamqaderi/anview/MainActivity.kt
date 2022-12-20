@@ -26,8 +26,14 @@ import androidx.lifecycle.LifecycleOwner
 import com.jamshedalamqaderi.anview.ui.theme.AnViewTheme
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        var screenWidth: Int = 0
+            private set
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        windowManager.defaultDisplay
         setContent {
             AnViewTheme {
                 Surface(
@@ -36,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val isAccessibilityServiceEnabled = remember {
                         mutableStateOf(
-                            ScraperAccessibilityService.isAccessibilityServiceEnabled(
+                            ScraperAccessibilityService.isEnabled(
                                 this@MainActivity
                             )
                         )
@@ -45,7 +51,7 @@ class MainActivity : ComponentActivity() {
                         when (event) {
                             Lifecycle.Event.ON_RESUME -> {
                                 isAccessibilityServiceEnabled.value =
-                                    ScraperAccessibilityService.isAccessibilityServiceEnabled(this@MainActivity)
+                                    ScraperAccessibilityService.isEnabled(this@MainActivity)
                             }
                             else -> {}
                         }
