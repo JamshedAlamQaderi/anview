@@ -18,7 +18,7 @@ object AccessibilityNodeInfoExt {
             append("maxTextLength = $maxTextLength; ")
             append(
                 "contentDescription = ${
-                    contentDescription?.toString()?.replace("\n", "\\n") ?: ""
+                contentDescription?.toString()?.replace("\n", "\\n") ?: ""
                 }; "
             )
             append("viewIdResName = $viewIdResourceName; ")
@@ -76,7 +76,7 @@ object AccessibilityNodeInfoExt {
     ) {
         val node = traverseTopToBottom(query, this, currentNodeIndex)
         if (node != null) {
-            resultNodes.add(node);
+            resultNodes.add(node)
             return
         }
         forEachChild { childNodeIndex, childNode ->

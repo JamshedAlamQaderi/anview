@@ -8,7 +8,6 @@ import com.jamshedalamqaderi.anview.ext.AccessibilityNodeInfoExt.toTreeString
 import com.jamshedalamqaderi.anview.services.AnViewAccessibilityService
 import kotlin.time.Duration.Companion.milliseconds
 
-
 class ScraperAccessibilityService : AnViewAccessibilityService() {
     companion object {
         fun isEnabled(context: Context): Boolean {
