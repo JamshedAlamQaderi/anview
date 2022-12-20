@@ -49,4 +49,9 @@ class ScraperAccessibilityService : AnViewAccessibilityService() {
             println(currentView()?.toTreeString())
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        removeViewObserver("MESSAGE_BOT")
+    }
 }

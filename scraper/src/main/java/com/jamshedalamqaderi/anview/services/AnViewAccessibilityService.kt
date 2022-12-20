@@ -77,7 +77,6 @@ abstract class AnViewAccessibilityService : AccessibilityService() {
 
     override fun onDestroy() {
         currentRootWindow = null
-        observerList.clear()
         instance = null
     }
 }

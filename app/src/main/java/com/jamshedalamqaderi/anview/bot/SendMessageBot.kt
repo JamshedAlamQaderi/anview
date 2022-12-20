@@ -7,10 +7,10 @@ import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.RequiresApi
 import com.jamshedalamqaderi.anview.dsl.anViewQuery
 import com.jamshedalamqaderi.anview.enums.ParamType
+import com.jamshedalamqaderi.anview.ext.AccessibilityNodeInfoExt.findNodes
 import com.jamshedalamqaderi.anview.ext.AnViewActions
 import com.jamshedalamqaderi.anview.ext.AnViewActions.click
 import com.jamshedalamqaderi.anview.ext.AnViewActions.inputText
-import com.jamshedalamqaderi.anview.ext.QueryNodeExt.findNodes
 
 
 class SendMessageBot(
@@ -72,12 +72,14 @@ class SendMessageBot(
         if (nodeInfo == null) return
         Log.i(this::class.simpleName, "Current state: $nextState")
         when (nextState) {
-            SendMessageBotState.PREPARE_OPEN_APP -> prepareOpenApp(nodeInfo)
+            SendMessageBotState.PREPARE_OPEN_APP -> prepareOpenApp()
             SendMessageBotState.VERIFY_OPEN_APP -> verifyOpenApp(nodeInfo)
             SendMessageBotState.PREPARE_CLICK_NEW -> prepareClickNew(nodeInfo)
             SendMessageBotState.VERIFY_CLICK_NEW -> verifyClickNew(nodeInfo)
             SendMessageBotState.PREPARE_TYPE_NUMBER -> prepareTypeNumber(nodeInfo)
-            SendMessageBotState.VERIFY_TYPE_NUMBER -> verifyTypeNumber(nodeInfo)
+            SendMessageBotState.VERIFY_TYPE_NUMBER -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                verifyTypeNumber(nodeInfo)
+            }
             SendMessageBotState.PREPARE_TYPE_MESSAGE -> prepareTypeMessage(nodeInfo)
             SendMessageBotState.VERIFY_TYPE_MESSAGE -> verifyTypeMessage(nodeInfo)
             SendMessageBotState.PREPARE_CLICK_SEND -> prepareClickSend(nodeInfo)
@@ -86,7 +88,7 @@ class SendMessageBot(
         }
     }
 
-    private fun prepareOpenApp(nodeInfo: AccessibilityNodeInfo) {
+    private fun prepareOpenApp() {
         // launch message app
         val intent = context
             .packageManager
