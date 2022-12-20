@@ -12,7 +12,6 @@ import com.jamshedalamqaderi.anview.ext.AnViewActions
 import com.jamshedalamqaderi.anview.ext.AnViewActions.click
 import com.jamshedalamqaderi.anview.ext.AnViewActions.inputText
 
-
 class SendMessageBot(
     private val context: Context,
     private val number: String,
@@ -188,5 +187,4 @@ class SendMessageBot(
             AnViewActions.pressHome()
         }
     }
-
 }

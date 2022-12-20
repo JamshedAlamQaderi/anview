@@ -63,11 +63,9 @@ abstract class AnViewAccessibilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-
     }
 
     override fun onInterrupt() {
-
     }
 
     override fun onUnbind(intent: Intent?): Boolean {

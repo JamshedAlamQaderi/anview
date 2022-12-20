@@ -13,7 +13,7 @@ Add this repository to the `build.gradle.kts` dependency on your android project
 Note: Get the latest version from the Maven Central (Available on top badge) and replace with `<anview_version>`.
 
 ```gradle
-implementation("com.jamshedalamqaderi:anview:<anview_version>")
+    implementation("com.jamshedalamqaderi:anview:<anview_version>")
 ```
 
 ### How to setup Accessibility service
@@ -116,11 +116,12 @@ implementation("com.jamshedalamqaderi:anview:<anview_version>")
    AnViewActions.pressHome() // simulate home button press on phone
    ```
 
-# TODO
-
 # Author
-Jamshed Alam Qaderi
-jamshedalamqaderi@gmail.com
+
+##### Jamshed Alam Qaderi
+
+[Twitter](https://twitter.com/JamshedQaderi) [Telegram](https://t.me/jamshedalamqaderi) [Skype](https://join.skype.com/invite/s7In6PrmvOOz)
 
 # Support
+
 Need help
