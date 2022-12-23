@@ -28,7 +28,7 @@ class ScraperAccessibilityService : AnViewAccessibilityService() {
         }
     }
 
-    private val viewDebugMode = false
+    private val viewDebugMode = true
 
     override fun onServiceConnected() {
         super.onServiceConnected()

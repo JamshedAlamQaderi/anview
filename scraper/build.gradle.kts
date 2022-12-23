@@ -1,6 +1,6 @@
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("org.jlleitschuh.gradle.ktlint")
     id("org.jetbrains.dokka")
@@ -32,21 +32,41 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
-dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.7.0")
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.mockito:mockito-core:4.9.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+kotlin {
+    android()
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+            }
+        }
+        val commonTest by getting {
+            dependencies {}
+        }
+        val androidMain by getting {
+            dependencies {
+                implementation("androidx.core:core-ktx:1.9.0")
+                implementation("androidx.appcompat:appcompat:1.5.1")
+                implementation("com.google.android.material:material:1.7.0")
+            }
+        }
+        val androidTest by getting {
+            dependencies {
+                implementation("junit:junit:4.13.2")
+                implementation("org.mockito:mockito-core:4.9.0")
+                implementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+            }
+        }
+        val androidAndroidTest by getting {
+            dependencies {
+                implementation("androidx.test.ext:junit:1.1.4")
+                implementation("androidx.test.espresso:espresso-core:3.5.0")
+            }
+        }
+    }
 }
 
 val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
