@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application") version "7.3.1" apply false
     id("com.android.library") version "7.3.1" apply false
-    id("org.jetbrains.kotlin.android") version "1.6.10" apply false
+    kotlin("multiplatform") version "1.6.10" apply false
     kotlin("plugin.serialization") version "1.6.10" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0" apply false
     id("org.jetbrains.dokka") version "1.6.10" apply false
