@@ -1,4 +1,4 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jamshedalamqaderi/anview/badge.svg?style=plastic)](https://central.sonatype.dev/artifact/com.jamshedalamqaderi/anview/)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jamshedalamqaderi/anview/badge.svg?style=plastic)](https://central.sonatype.dev/artifact/com.jamshedalamqaderi/anview/) ![badge-android](http://img.shields.io/badge/Platform-Android-brightgreen.svg?logo=android)
 
 # AnView
 
