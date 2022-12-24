@@ -1,4 +1,4 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jamshedalamqaderi/anview/badge.svg?style=plastic)](https://central.sonatype.dev/artifact/com.jamshedalamqaderi/anview/)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jamshedalamqaderi/anview/badge.svg?style=plastic)](https://central.sonatype.dev/artifact/com.jamshedalamqaderi/anview/) ![badge-android](http://img.shields.io/badge/Platform-Android-brightgreen.svg?logo=android)
 
 # AnView
 
@@ -13,7 +13,11 @@ Add this repository to the `build.gradle.kts` dependency on your android project
 Note: Get the latest version from the Maven Central (Available on top badge) and replace with `<anview_version>`.
 
 ```gradle
+    // for multiplatform common module
     implementation("com.jamshedalamqaderi:anview:<anview_version>")
+
+    // only android project
+    implementation("com.jamshedalamqaderi:anview-android:<anview_version>")
 ```
 
 ### How to setup Accessibility service
