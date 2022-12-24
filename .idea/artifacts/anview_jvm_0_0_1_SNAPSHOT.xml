@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="anview-jvm-0.0.1-SNAPSHOT">
-    <output-path>$PROJECT_DIR$/scraper/build/libs</output-path>
-    <root id="archive" name="anview-jvm-0.0.1-SNAPSHOT.jar">
-      <element id="module-output" name="AnViewProject.anview.jvmMain" />
-    </root>
-  </artifact>
-</component>
