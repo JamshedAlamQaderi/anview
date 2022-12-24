@@ -12,7 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "AnView"
+rootProject.name = "AnViewProject"
 include(":app")
 include(":scraper")
 project(":scraper").name = "anview"

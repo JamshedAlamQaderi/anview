@@ -10,7 +10,7 @@ plugins {
 android {
     namespace = "com.jamshedalamqaderi.anview"
     compileSdk = 33
-
+    sourceSets["main"].manifest.srcFile("${project.projectDir}/src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = 21
         targetSdk = 33
@@ -36,6 +36,9 @@ android {
 
 kotlin {
     android {
+        compilations.all {
+            kotlinOptions.jvmTarget = "1.8"
+        }
         publishLibraryVariants("release")
     }
 
@@ -69,14 +72,6 @@ kotlin {
             }
         }
     }
-}
-
-val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
-
-val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
-    dependsOn(dokkaHtml)
-    archiveClassifier.set("javadoc")
-    from(dokkaHtml.outputDirectory.get())
 }
 
 mavenPublishing {
