@@ -12,7 +12,7 @@ plugins {
 val projectVersion: String? by project
 
 allprojects {
-    group = "com.jamshedalamqaderi"
+    group = "com.jamshedalamqaderi.anview"
     version = projectVersion?.replaceFirst("v", "", true) ?: "0.0.1-SNAPSHOT"
     apply {
         plugin("org.jetbrains.kotlinx.kover")

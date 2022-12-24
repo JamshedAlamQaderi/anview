@@ -14,10 +14,13 @@ Note: Get the latest version from the Maven Central (Available on top badge) and
 
 ```gradle
     // for multiplatform common module
-    implementation("com.jamshedalamqaderi:anview:<anview_version>")
+    implementation("com.jamshedalamqaderi.anview:anview:<anview_version>")
+    // or if you target other platform instead of android and jvm
+    // then add jvm module to the common module
+    implementation("com.jamshedalamqaderi.anview:anview-jvm:<anview_version>")
 
     // only android project
-    implementation("com.jamshedalamqaderi:anview-android:<anview_version>")
+    implementation("com.jamshedalamqaderi.anview:anview-android:<anview_version>")
 ```
 
 ### How to setup Accessibility service
