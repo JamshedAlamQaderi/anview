@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.KotlinMultiplatform
+
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
@@ -35,7 +37,9 @@ android {
 }
 
 kotlin {
-    android()
+    android{
+        publishLibraryVariants("release")
+    }
 
     sourceSets {
         val commonMain by getting {
