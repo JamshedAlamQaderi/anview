@@ -34,7 +34,7 @@ class AnViewQueryNodeBuilder : AnViewBuilder<QueryNode>, AnViewQueryBuilder {
         return QueryNode(
             queryParamBuilder.build(),
             child = queryBuilder?.build(),
-            isOptional = optionalQueryNodeBuilder != null
+            isOptional = if (optionalQueryNodeBuilder != null) true else null
         )
     }
 }

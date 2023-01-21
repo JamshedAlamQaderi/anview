@@ -18,9 +18,7 @@ object AccessibilityNodeInfoExt {
             append("error = $error; ")
             append("maxTextLength = $maxTextLength; ")
             append(
-                "contentDescription = ${
-                    contentDescription?.toString()?.replace("\n", "\\n") ?: ""
-                }; "
+                "contentDescription = ${contentDescription?.toString()?.replace("\n", "\\n") ?: ""}; "
             )
             append("viewIdResName = $viewIdResourceName; ")
             append("checkable = $isCheckable; ")
