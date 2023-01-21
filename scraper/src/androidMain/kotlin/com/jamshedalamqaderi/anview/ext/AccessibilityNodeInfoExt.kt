@@ -8,6 +8,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 object AccessibilityNodeInfoExt {
+    private val NULL = "NULL"
 
     fun AccessibilityNodeInfo.toAnViewString(): String {
         return StringBuilder().apply {
@@ -18,7 +19,7 @@ object AccessibilityNodeInfoExt {
             append("maxTextLength = $maxTextLength; ")
             append(
                 "contentDescription = ${
-                contentDescription?.toString()?.replace("\n", "\\n") ?: ""
+                    contentDescription?.toString()?.replace("\n", "\\n") ?: ""
                 }; "
             )
             append("viewIdResName = $viewIdResourceName; ")
@@ -112,7 +113,11 @@ object AccessibilityNodeInfoExt {
                     return@forEachChild
                 }
             }
-            return resultNode
+            return if (resultNode != null) {
+                resultNode
+            } else if (query.isOptional == true) {
+                nodeInfo
+            } else null
         }
         return null
     }
@@ -134,27 +139,27 @@ object AccessibilityNodeInfoExt {
         }
 
         return when (param.paramType) {
-            ParamType.packageName -> nodeInfo?.packageName?.toString()
-            ParamType.className -> nodeInfo?.className?.toString()
-            ParamType.text -> nodeInfo?.text?.toString()
-            ParamType.error -> nodeInfo?.error?.toString()
-            ParamType.maxTextLength -> nodeInfo?.maxTextLength?.toString()
-            ParamType.contentDescription -> nodeInfo?.contentDescription?.toString()
-            ParamType.viewIdResName -> nodeInfo?.viewIdResourceName?.toString()
-            ParamType.checkable -> nodeInfo?.isCheckable?.toString()
-            ParamType.checked -> nodeInfo?.isChecked?.toString()
-            ParamType.focusable -> nodeInfo?.isFocusable?.toString()
-            ParamType.focused -> nodeInfo?.isFocused?.toString()
-            ParamType.selected -> nodeInfo?.isSelected?.toString()
-            ParamType.clickable -> nodeInfo?.isClickable?.toString()
-            ParamType.longClickable -> nodeInfo?.isLongClickable?.toString()
-            ParamType.enabled -> nodeInfo?.isEnabled?.toString()
-            ParamType.password -> nodeInfo?.isPassword?.toString()
-            ParamType.scrollable -> nodeInfo?.isScrollable?.toString()
-            ParamType.visible -> nodeInfo?.isVisibleToUser?.toString()
-            ParamType.nodeIndex -> nodeInfoIndex?.toString()
-            else -> null
-        }?.isMatched(param.value) ?: false
+            ParamType.packageName -> nodeInfo?.packageName?.toString() ?: NULL
+            ParamType.className -> nodeInfo?.className?.toString() ?: NULL
+            ParamType.text -> nodeInfo?.text?.toString() ?: NULL
+            ParamType.error -> nodeInfo?.error?.toString() ?: NULL
+            ParamType.maxTextLength -> nodeInfo?.maxTextLength?.toString() ?: NULL
+            ParamType.contentDescription -> nodeInfo?.contentDescription?.toString() ?: NULL
+            ParamType.viewIdResName -> nodeInfo?.viewIdResourceName?.toString() ?: NULL
+            ParamType.checkable -> nodeInfo?.isCheckable?.toString() ?: NULL
+            ParamType.checked -> nodeInfo?.isChecked?.toString() ?: NULL
+            ParamType.focusable -> nodeInfo?.isFocusable?.toString() ?: NULL
+            ParamType.focused -> nodeInfo?.isFocused?.toString() ?: NULL
+            ParamType.selected -> nodeInfo?.isSelected?.toString() ?: NULL
+            ParamType.clickable -> nodeInfo?.isClickable?.toString() ?: NULL
+            ParamType.longClickable -> nodeInfo?.isLongClickable?.toString() ?: NULL
+            ParamType.enabled -> nodeInfo?.isEnabled?.toString() ?: NULL
+            ParamType.password -> nodeInfo?.isPassword?.toString() ?: NULL
+            ParamType.scrollable -> nodeInfo?.isScrollable?.toString() ?: NULL
+            ParamType.visible -> nodeInfo?.isVisibleToUser?.toString() ?: NULL
+            ParamType.nodeIndex -> nodeInfoIndex?.toString() ?: NULL
+            else -> NULL
+        }.isMatched(param.value)
     }
 
     fun AccessibilityNodeInfo.forEachChild(block: (Int, AccessibilityNodeInfo?) -> Unit) {
