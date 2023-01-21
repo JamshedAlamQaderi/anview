@@ -13,6 +13,7 @@ fun anViewQuery(block: AnViewQueryBuilder.() -> Unit): QueryNode {
 class AnViewQueryNodeBuilder : AnViewBuilder<QueryNode>, AnViewQueryBuilder {
     private lateinit var queryParamBuilder: AnViewQueryParamBuilder
     private var queryNodeBuilder: AnViewQueryNodeBuilder? = null
+    private var optionalQueryNodeBuilder: AnViewQueryNodeBuilder? = null
 
     override fun params(block: AnViewParamBuilder.() -> Unit) {
         queryParamBuilder = AnViewQueryParamBuilder()
@@ -23,8 +24,18 @@ class AnViewQueryNodeBuilder : AnViewBuilder<QueryNode>, AnViewQueryBuilder {
         queryNodeBuilder = AnViewQueryNodeBuilder().apply(block)
     }
 
+    override fun optionalQuery(block: AnViewQueryBuilder.() -> Unit) {
+        optionalQueryNodeBuilder = AnViewQueryNodeBuilder().apply(block)
+    }
+
     override fun build(): QueryNode {
-        return QueryNode(queryParamBuilder.build(), child = queryNodeBuilder?.build())
+        val queryBuilder =
+            if (queryNodeBuilder != null) queryNodeBuilder else optionalQueryNodeBuilder
+        return QueryNode(
+            queryParamBuilder.build(),
+            child = queryBuilder?.build(),
+            isOptional = if (optionalQueryNodeBuilder != null) true else null
+        )
     }
 }
 
@@ -49,6 +60,8 @@ interface AnViewParamBuilder {
 interface AnViewQueryBuilder {
     fun params(block: AnViewParamBuilder.() -> Unit)
     fun query(block: AnViewQueryBuilder.() -> Unit)
+
+    fun optionalQuery(block: AnViewQueryBuilder.() -> Unit)
 }
 
 interface AnViewBuilder<T> {

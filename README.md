@@ -87,6 +87,10 @@ Note: Get the latest version from the Maven Central (Available on top badge) and
                param(ParamType.className, "android.widget.EditText")
                param(ParamType.text, "Search([a-z0-9A-Z])") // Regex is supported for some param type's
            }
+           optionalQuery{ // Optional query will return parent node if no match found
+                param(ParamType.packageName, "com.jamshedalamqaderi.anview")
+                param(ParamType.className, "android.widget.TextView")
+           }
        }
    }
 

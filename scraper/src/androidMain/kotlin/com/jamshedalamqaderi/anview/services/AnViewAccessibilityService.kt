@@ -44,8 +44,6 @@ abstract class AnViewAccessibilityService : AccessibilityService() {
         }
     }
 
-    private var enabledDebugMode = false
-
     override fun onServiceConnected() {
         instance = this
         val timer = Timer()
@@ -63,6 +61,11 @@ abstract class AnViewAccessibilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
+            currentRootWindow = rootInActiveWindow
+        } else if (event?.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
+            currentRootWindow = rootInActiveWindow
+        }
     }
 
     override fun onInterrupt() {
