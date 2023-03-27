@@ -9,6 +9,7 @@ import com.jamshedalamqaderi.anview.exceptions.AnViewObserverAlreadyRegisteredEx
 import java.util.Timer
 import java.util.TimerTask
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 abstract class AnViewAccessibilityService : AccessibilityService() {
     companion object {
@@ -44,12 +45,18 @@ abstract class AnViewAccessibilityService : AccessibilityService() {
         }
     }
 
+    private var timer: Timer? = null
+
     override fun onServiceConnected() {
+        initAnView()
+    }
+
+    protected fun initAnView(refreshPeriod: Duration = 100.milliseconds) {
         instance = this
-        val timer = Timer()
+        timer = Timer()
         val timerTask = object : TimerTask() {
             override fun run() {
-                currentRootWindow = rootInActiveWindow
+                setRootWindow(rootInActiveWindow)
                 observerList.forEach { observer ->
                     if (observer.isReadyToNotify()) {
                         observer.observer(currentRootWindow)
@@ -57,14 +64,28 @@ abstract class AnViewAccessibilityService : AccessibilityService() {
                 }
             }
         }
-        timer.scheduleAtFixedRate(timerTask, 0, 100)
+        timer?.scheduleAtFixedRate(timerTask, 0, refreshPeriod.inWholeMilliseconds)
+    }
+
+    protected fun initAnView(
+        timerTask: TimerTask,
+        refreshPeriod: Duration = 100.milliseconds
+    ) {
+        instance = this
+        timer = Timer().apply {
+            scheduleAtFixedRate(timerTask, 0, refreshPeriod.inWholeMilliseconds)
+        }
+    }
+
+    protected fun setRootWindow(rootView: AccessibilityNodeInfo?) {
+        currentRootWindow = rootView
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
-            currentRootWindow = rootInActiveWindow
+            setRootWindow(rootInActiveWindow)
         } else if (event?.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
-            currentRootWindow = rootInActiveWindow
+            setRootWindow(rootInActiveWindow)
         }
     }
 
@@ -79,5 +100,6 @@ abstract class AnViewAccessibilityService : AccessibilityService() {
     override fun onDestroy() {
         currentRootWindow = null
         instance = null
+        timer?.cancel()
     }
 }
